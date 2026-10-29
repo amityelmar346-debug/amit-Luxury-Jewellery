@@ -9,34 +9,51 @@ const products = [
     },
     {
         id: 2,
-        name: "Elegant Bridal Earrings",
+        name: "Elegant Gold Earrings",
         category: "earrings",
         price: 8999,
         image: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=600&q=80"
     },
     {
         id: 3,
-        name: "Forever Wedding Ring",
+        name: "Wedding Ring",
         category: "rings",
-        price: 12999,
+        price: 14999,
         image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80"
     },
     {
         id: 4,
-        name: "Luxury Gold Bracelet",
-        category: "bracelets",
-        price: 15999,
-        image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=600&q=80"
+        name: "Bridal Necklace Set",
+        category: "necklaces",
+        price: 32999,
+        image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 5,
+        name: "Classic Diamond Earrings",
+        category: "earrings",
+        price: 11999,
+        image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 6,
+        name: "Forever Wedding Band",
+        category: "rings",
+        price: 17999,
+        image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80"
     }
 ];
 
 let cart = [];
 
 const productGrid = document.getElementById("productGrid");
-const cartCount = document.getElementById("cartCount");
+const cartButton = document.getElementById("cartButton");
 const cartPanel = document.getElementById("cartPanel");
+const closeCart = document.getElementById("closeCart");
+const cartCount = document.getElementById("cartCount");
 const cartItems = document.getElementById("cartItems");
 const cartTotal = document.getElementById("cartTotal");
+const checkoutButton = document.getElementById("checkoutButton");
 
 function displayProducts(category = "all") {
     if (!productGrid) return;
@@ -47,12 +64,14 @@ function displayProducts(category = "all") {
 
     productGrid.innerHTML = filteredProducts.map(product => `
         <article class="product-card">
-            <img src="${product.image}" alt="${product.name}">
+            <img src="${product.image}" alt="${product.name}" loading="lazy">
             <div class="product-info">
                 <h3>${product.name}</h3>
-                <p>₹${product.price.toLocaleString("en-IN")}</p>
-                <button class="primary-button"
-                    onclick="addToCart(${product.id})">
+                <p>Timeless design for your special moments.</p>
+                <div class="product-price">
+                    ₹${product.price.toLocaleString("en-IN")}
+                </div>
+                <button class="add-to-cart" data-id="${product.id}">
                     ADD TO BAG
                 </button>
             </div>
@@ -60,11 +79,28 @@ function displayProducts(category = "all") {
     `).join("");
 }
 
-function addToCart(productId) {
-    const product = products.find(item => item.id === productId);
+document.querySelectorAll(".filter").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".filter").forEach(item => {
+            item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+        displayProducts(button.dataset.category);
+    });
+});
+
+productGrid?.addEventListener("click", event => {
+    const button = event.target.closest(".add-to-cart");
+    if (!button) return;
+
+    const product = products.find(
+        item => item.id === Number(button.dataset.id)
+    );
+
     if (!product) return;
 
-    const existingItem = cart.find(item => item.id === productId);
+    const existingItem = cart.find(item => item.id === product.id);
 
     if (existingItem) {
         existingItem.quantity++;
@@ -73,105 +109,84 @@ function addToCart(productId) {
     }
 
     updateCart();
-}
+    cartPanel.hidden = false;
+});
 
 function updateCart() {
-    if (cartCount) {
-        cartCount.textContent = cart.reduce(
-            (total, item) => total + item.quantity, 0
-        );
-    }
+    cartCount.textContent = cart.reduce(
+        (total, item) => total + item.quantity, 0
+    );
 
-    if (cartItems) {
-        cartItems.innerHTML = cart.length
-            ? cart.map(item => `
-                <div class="cart-item">
-                    <p>${item.name}</p>
-                    <p>₹${(item.price * item.quantity).toLocaleString("en-IN")}</p>
-                    <button onclick="changeQuantity(${item.id}, -1)">−</button>
-                    <span>${item.quantity}</span>
-                    <button onclick="changeQuantity(${item.id}, 1)">+</button>
-                    <button onclick="removeFromCart(${item.id})">Remove</button>
-                </div>
-            `).join("")
-            : "<p>Your shopping bag is empty.</p>";
-    }
+    cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <div>
+                <strong>${item.name}</strong>
+                <p>₹${item.price.toLocaleString("en-IN")} × ${item.quantity}</p>
+            </div>
+            <div>
+                <button data-action="minus" data-id="${item.id}">−</button>
+                <button data-action="plus" data-id="${item.id}">+</button>
+                <button data-action="remove" data-id="${item.id}">Remove</button>
+            </div>
+        </div>
+    `).join("");
 
-    if (cartTotal) {
-        const total = cart.reduce(
-            (sum, item) => sum + item.price * item.quantity, 0
-        );
-        cartTotal.textContent = "₹" + total.toLocaleString("en-IN");
-    }
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
+    );
+
+    cartTotal.textContent = "₹" + total.toLocaleString("en-IN");
 }
 
-function changeQuantity(productId, amount) {
-    const item = cart.find(product => product.id === productId);
+cartItems?.addEventListener("click", event => {
+    const button = event.target.closest("button");
+    if (!button) return;
+
+    const id = Number(button.dataset.id);
+    const action = button.dataset.action;
+    const item = cart.find(product => product.id === id);
+
     if (!item) return;
 
-    item.quantity += amount;
-
-    if (item.quantity <= 0) {
-        removeFromCart(productId);
-    } else {
-        updateCart();
+    if (action === "plus") item.quantity++;
+    if (action === "minus") item.quantity--;
+    if (action === "remove" || item.quantity <= 0) {
+        cart = cart.filter(product => product.id !== id);
     }
-}
 
-function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
     updateCart();
-}
-
-// Jewellery category filters
-document.querySelectorAll(".filter").forEach(button => {
-    button.addEventListener("click", () => {
-        document.querySelectorAll(".filter").forEach(btn =>
-            btn.classList.remove("active")
-        );
-
-        button.classList.add("active");
-        displayProducts(button.dataset.category);
-    });
 });
 
-// Open and close shopping bag
-if (cartPanel) {
+cartButton?.addEventListener("click", () => {
+    cartPanel.hidden = false;
+});
+
+closeCart?.addEventListener("click", () => {
     cartPanel.hidden = true;
-}
-
-document.getElementById("cartButton")?.addEventListener("click", () => {
-    if (cartPanel) cartPanel.hidden = false;
 });
 
-document.getElementById("closeCart")?.addEventListener("click", () => {
-    if (cartPanel) cartPanel.hidden = true;
-});
-
-// Demo checkout enquiry
-document.getElementById("checkoutButton")?.addEventListener("click", () => {
+checkoutButton?.addEventListener("click", () => {
     if (cart.length === 0) {
         alert("Your shopping bag is empty!");
         return;
     }
 
-    const orderDetails = cart.map(item =>
-        `${item.name} x ${item.quantity}`
+    const message = cart.map(item =>
+        `${item.name} x ${item.quantity} = ₹${(item.price * item.quantity).toLocaleString("en-IN")}`
     ).join("\n");
 
-    alert(
-        "Thank you for choosing AMIT YELMAR!\n\n" +
-        orderDetails +
-        "\n\nThis is a demo store. No order or payment was processed."
+    const total = cart.reduce(
+        (sum, item) => sum + item.price * item.quantity, 0
     );
+
+    const enquiry = encodeURIComponent(
+        `Hello AMIT YELMAR, I would like to enquire about:\n${message}\nTotal: ₹${total.toLocaleString("en-IN")}`
+    );
+
+    window.location.href = `mailto:?subject=Jewellery Purchase Enquiry&body=${enquiry}`;
 });
 
-// Current year in footer
-const yearElement = document.getElementById("year");
-if (yearElement) {
-    yearElement.textContent = new Date().getFullYear();
-}
+document.getElementById("year").textContent = new Date().getFullYear();
 
-// Show products when website opens
 displayProducts();
 updateCart();
