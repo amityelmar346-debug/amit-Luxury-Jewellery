@@ -128,20 +128,16 @@ function displayProducts(category = activeCategory) {
     });
 }
 
-function setActiveFilter(category) {
-    document.querySelectorAll(".filter").forEach(button => {
-        const isActive = button.dataset.category === category;
-        button.classList.toggle("active", isActive);
-        button.setAttribute("aria-pressed", String(isActive));
-    });
-}
 
-document.querySelectorAll(".filter").forEach(button => {
-    button.addEventListener("click", () => {
-        const category = button.dataset.category;
-        setActiveFilter(category);
-        displayProducts(category);
-    });
+document.addEventListener("click", function (event) {
+    const button = event.target.closest(".filter");
+
+    if (!button) return;
+
+    const category = button.dataset.category;
+
+    setActiveFilter(category);
+    displayProducts(category);
 });
 
 // Clicking a collection card filters the products.
