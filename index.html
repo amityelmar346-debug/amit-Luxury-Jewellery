@@ -1,21 +1,131 @@
 
-<section class="hero wedding-hero" id="home">
-    <div class="hero-content">
-        <p class="eyebrow">AMIT YELMAR • WEDDING COLLECTION</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <h1>
-            Two Hearts,<br>
-            One Journey,<br>
-            <em>Forever.</em>
-        </h1>
+    <title>AMIT YELMAR | Luxury Jewellery</title>
 
-        <p>
-            Celebrate your love with timeless gold jewellery,
-            wedding rings and exquisite bridal collections.
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <div class="announcement">
+        AMIT YELMAR — THE WEDDING COLLECTION
+    </div>
+
+    <header class="navbar">
+        <a href="#home" class="logo">AMIT <span>YELMAR</span></a>
+
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#collections">Collections</a>
+            <a href="#products">Jewellery</a>
+            <a href="#about">Our Story</a>
+        </nav>
+
+        <button class="cart-button" id="cartButton">
+            Bag (<span id="cartCount">0</span>)
+        </button>
+    </header>
+
+    <main>
+        <section class="hero wedding-hero" id="home">
+            <div class="hero-content">
+                <p class="eyebrow">AMIT YELMAR • WEDDING COLLECTION</p>
+
+                <h1>
+                    Two Hearts,<br>
+                    One Journey,<br>
+                    <em>Forever.</em>
+                </h1>
+
+                <p>
+                    Celebrate your love with timeless gold jewellery,
+                    wedding rings and exquisite bridal collections.
+                </p>
+
+                <a href="#products" class="primary-button">
+                    EXPLORE WEDDING COLLECTION
+                </a>
+            </div>
+        </section>
+
+        <section class="collections" id="collections">
+            <p class="eyebrow">DISCOVER YOUR STYLE</p>
+            <h2>Our Collections</h2>
+
+            <div class="collection-grid">
+                <a href="#products" class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?auto=format&fit=crop&w=600&q=80"
+                         alt="Gold jewellery">
+                    <span>Necklaces</span>
+                </a>
+
+                <a href="#products" class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=600&q=80"
+                         alt="Elegant earrings">
+                    <span>Earrings</span>
+                </a>
+
+                <a href="#products" class="collection-card">
+                    <img src="https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=600&q=80"
+                         alt="Wedding ring">
+                    <span>Wedding Rings</span>
+                </a>
+            </div>
+        </section>
+
+        <section class="products" id="products">
+            <p class="eyebrow">HANDPICKED FOR YOU</p>
+            <h2>Signature Jewellery</h2>
+
+            <div class="filters">
+                <button class="filter active" data-category="all">All</button>
+                <button class="filter" data-category="necklaces">Necklaces</button>
+                <button class="filter" data-category="earrings">Earrings</button>
+                <button class="filter" data-category="rings">Rings</button>
+            </div>
+
+            <div class="product-grid" id="productGrid"></div>
+        </section>
+
+        <section class="story" id="about">
+            <p class="eyebrow">OUR PHILOSOPHY</p>
+            <h2>Jewellery for<br>your forever moments.</h2>
+            <p>
+                Every love story is unique. Discover jewellery
+                inspired by the beauty of weddings and timeless elegance.
+            </p>
+            <a href="#products" class="primary-button">DISCOVER MORE</a>
+        </section>
+    </main>
+
+    <aside class="cart-panel" id="cartPanel" hidden>
+        <div class="cart-heading">
+            <h2>Your Shopping Bag</h2>
+            <button id="closeCart">Close ✕</button>
+        </div>
+
+        <div id="cartItems"></div>
+
+        <p class="cart-total">
+            Total: <strong id="cartTotal">₹0</strong>
         </p>
 
-        <a href="#products" class="primary-button">
-            EXPLORE WEDDING COLLECTION
-        </a>
-    </div>
-</section>
+        <button class="primary-button" id="checkoutButton">
+            ENQUIRE TO PURCHASE
+        </button>
+        <p>Demo store. No payment is processed.</p>
+    </aside>
+
+    <footer>
+        <a href="#home" class="logo">AMIT <span>YELMAR</span></a>
+        <p>Timeless elegance. Distinctive design.</p>
+        <p>© <span id="year"></span> AMIT YELMAR</p>
+    </footer>
+
+</body>
+</html>
