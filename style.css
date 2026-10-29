@@ -1,0 +1,83 @@
+
+/* Luxury Wedding Hero Banner */
+
+.wedding-hero {
+    min-height: 650px;
+    display: flex;
+    align-items: center;
+    padding: 80px 8%;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(20, 12, 8, 0.90) 0%,
+            rgba(20, 12, 8, 0.60) 45%,
+            rgba(20, 12, 8, 0.12) 100%
+        ),
+        url("wedding-banner.png");
+
+    background-size: cover;
+    background-position: center;
+    color: #fff8e9;
+}
+
+.wedding-hero .hero-content {
+    max-width: 580px;
+}
+
+.wedding-hero .eyebrow {
+    color: #e5c078;
+    letter-spacing: 4px;
+    font-size: 12px;
+    margin-bottom: 25px;
+}
+
+.wedding-hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(42px, 6vw, 76px);
+    line-height: 1.12;
+    margin-bottom: 24px;
+    font-weight: normal;
+}
+
+.wedding-hero h1 em {
+    color: #e5b85c;
+}
+
+.wedding-hero p {
+    line-height: 1.8;
+    font-size: 16px;
+    margin-bottom: 30px;
+}
+
+.wedding-hero .primary-button {
+    display: inline-block;
+    background: #c9a253;
+    color: #1c130b;
+    padding: 16px 25px;
+    text-decoration: none;
+    letter-spacing: 1px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.wedding-hero .primary-button:hover {
+    background: #f0d79b;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .wedding-hero {
+        min-height: 570px;
+        padding: 50px 7%;
+        background-position: 38% center;
+    }
+
+    .wedding-hero .hero-content {
+        max-width: 100%;
+    }
+
+    .wedding-hero h1 {
+        font-size: 43px;
+    }
+}
